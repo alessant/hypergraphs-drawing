@@ -1,0 +1,4 @@
+/node_modules
+/dist
+.eslintrc.json
+src/classes/test.js
