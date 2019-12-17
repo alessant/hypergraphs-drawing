@@ -13,7 +13,9 @@ export default class Hypergraph{
         this.hyperedges = {}
 
         if (data != null){
-            utils._convertToHypergraph(this, data)
+            //utils._convertToHypergraph(this, data)
+            this.nodes = data["nodes"];
+            this.hyperedges = data["hyperedges"];
         }
     }
   

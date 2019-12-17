@@ -7,13 +7,13 @@ export default class DrawableHypergraph extends Hypergraph{
     constructor(data){
         super(data);
 
-        var fakeNodes = [];
-        var edges = [];
+        this.fakeNodes = [];
+        this.edges = [];
 
-        this._populateGraphData(fakeNodes, edges);
+        this._populateGraphData(this.fakeNodes, this.edges);
 
-        console.log(fakeNodes);
-        console.log(edges);
+        console.log("Fake nodes: ", this.fakeNodes);
+        console.log("Fake edges:", this.edges);
     }
 
 
@@ -23,7 +23,7 @@ export default class DrawableHypergraph extends Hypergraph{
         Object.keys(this.hyperedges).forEach(element => {
             var heNodes = this.hyperedges[element]["nodes"];
 
-            heNodes.forEach(node => {
+            heNodes.forEach(node => { 
                 edges.push([node, fakeNodeId]);
             });
 

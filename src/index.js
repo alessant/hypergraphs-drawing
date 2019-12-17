@@ -17,9 +17,12 @@
 'use strict'
 
 import * as classes from './classes';
+import * as drawing from './drawing';
 
 export{
-    classes
+    classes,
+    drawing
 };
 
 export * from './classes';
+export * from './drawing';
