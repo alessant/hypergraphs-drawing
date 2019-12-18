@@ -9,7 +9,14 @@ export function draw(
         charge=-120,
         linkDistance=40,
         nodeShape='circle',
-        config, optBind){
+        withLabels=false,
+        withEdgeLabels=false,
+        labelStyle='none',
+        edgeLabelStyle='none',
+        weighted=false,
+        optBind)
+{
+
     console.log("Draw");
     console.log(hg);
 
@@ -17,11 +24,31 @@ export function draw(
 
     console.log(graph);
 
+    if (labelStyle=='none'){
+        labelStyle = {
+            'text-anchor': 'middle',
+            'dominant-baseline': 'central',
+            'cursor': 'pointer',
+            '-webkit-user-select': 'none',
+            'fill': '#000'
+        }
+    }
+    if (edgeLabelStyle=='none'){
+        edgeLabelStyle = {
+            'font-size': '0.8em',
+            'dominant-baseline': 'central',
+            'text-anchor': 'middle',
+            '-webkit-user-select': 'none'
+        }
+    }
+
     jsnx.draw(graph, {
-        //element: '#canvas',
         element: `#${element}`, 
         width: width,
         height: height,
+        weighted: weighted,
+        withLabels: withLabels,
+        withEdgeLabels: withEdgeLabels,
         layoutAttr: {
             charge: charge,
             linkDistance: linkDistance
@@ -68,7 +95,19 @@ export function draw(
             'stroke-opacity': function(d) { 
                 return d.data.strokeOpacity || 1; 
             },
-        }
+        },
+        labels: function(d) { 
+            console.log(d.data);
+            return d.data.label || d.node; 
+        },
+        edgeLabels: function(d) { 
+            return d.data.label || d.edge; 
+        },
+        labelStyle: labelStyle,
+        edgeLabelStyle: edgeLabelStyle,
+        weights: function(d) { 
+            return d.data.weight || "weight"; 
+        },
     });
 }
 
@@ -103,39 +142,13 @@ function toJSNXGraph(hg){
         //handle fake nodes appearance
         graph.node.get(fakeNodeId).size = 1;
         graph.node.get(fakeNodeId).color = color;
+        graph.node.get(fakeNodeId).label = " ";
 
         fakeNodeId++;
     });
 
     console.log(graph.edges(true));
 
-    
-    // fakeNodes.forEach((fNode, i) => {
-    //     console.log(fNode, i);
-
-    //     graph.node.get(fNode).size = 1;
-    //     graph.node.get(fNode).color = "fff";
-    // });
-
     return graph;
 }
 
-// function toJSNXGraph(hg){
-//     var graph = new jsnx.Graph();
-//     var color = d3.scale.category20();
-
-//     console.log(color);
-
-//     Object.keys(hg.nodes).forEach(node => {
-//         graph.addNode(parseInt(node));
-//     });
-
-//     graph.addNodesFrom(hg.fakeNodes);
-//     console.log(graph.nodes());
-
-//     console.log(hg.edges);
-//     graph.addEdgesFrom(hg.edges);
-//     console.log(graph.edges());
-
-//     return graph;
-// }
