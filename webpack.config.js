@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    mode: 'development', //production
+    mode: 'development', //'development', //production
     entry: {
         hypergraphsdrawing: './src/index.js'
     },

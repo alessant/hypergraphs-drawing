@@ -10,9 +10,9 @@ export function draw(
         linkDistance=40,
         nodeShape='circle',
         withLabels=true,
-        withEdgeLabels=false,
+        withEdgeLabels=true,
         labelStyle='none',
-        edgeLabelStyle='none',
+        edgeLabelStyle='none', 
         weighted=false,
         optBind)
 {
