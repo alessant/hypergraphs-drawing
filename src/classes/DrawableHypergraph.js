@@ -29,7 +29,7 @@ export default class DrawableHypergraph extends Hypergraph{
 
         });
 
-        fakeNodes.push(fakeNodeId);
+        fakeNodes.push(fakeNodeId); 
         fakeNodeId++;
     }
 
