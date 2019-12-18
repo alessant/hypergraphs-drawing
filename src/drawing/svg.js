@@ -9,7 +9,7 @@ export function draw(
         charge=-120,
         linkDistance=40,
         nodeShape='circle',
-        withLabels=false,
+        withLabels=true,
         withEdgeLabels=false,
         labelStyle='none',
         edgeLabelStyle='none',
