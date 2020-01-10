@@ -26,7 +26,9 @@ export function draw(
     nodeLabelsAttr=null,
     nodeLabelsStyle=null,
     withNodeMetadataOnHover=true,
-    edgeColors=null,  
+    withNodeWeight=true,
+    edgeColors=null, 
+    withEdgeLabels=true, 
     withHyperedgesMetadataOnHover=true)
 {
     var hypergraph = function (links,nodes) {
@@ -37,7 +39,7 @@ export function draw(
         var	k;
         var nodesSelfloop={};
 
-        links.forEach((d, i) => {
+        links.forEach((d, index) => {
             
             var color = (edgeColors != null) ? edgeColors[i] : getRandomColor();
    
@@ -49,29 +51,29 @@ export function draw(
                     id += d.link[k];
                 }
             //connection node creation
-                i = {id: id, link: true};
+                i = {id: id, link: true, heid: (index+1)};
             //add the connection node to the node array
                 nodes.push(i);
             //creation of the link from every node of the connection set to the connection node
                 for (j = 0; j < d.link.length; j++) {
                
-                    hyper.push({source: d.link[j], target: i.id, he: d.he, color: color});
+                    hyper.push({source: d.link[j], target: i.id, he: d.he, heid:(index+1), color: color});
                 }
             }else{
                 if (d.link.length == 1) {
                     
                     if(nodesSelfloop[d.link[0]] == undefined)
                     {
-                        nodesSelfloop[d.link[0]] = 5;
+                        nodesSelfloop[d.link[0]] = 10;
                  
                     }
-                    nodesSelfloop[d.link[0]]=nodesSelfloop[d.link[0]]+5;
-                    link = {source: d.link[0], target: d.link[0], size : nodesSelfloop[d.link[0]], he: d.he, color: color}
+                    nodesSelfloop[d.link[0]]=nodesSelfloop[d.link[0]]+13;
+                    link = {source: d.link[0], target: d.link[0], size : nodesSelfloop[d.link[0]], he: d.he, heid: (index+1), color: color}
                     hyper.push(link);
                     
                 }else
             //if link < 2 then the connection is the traditional one w/o connection node
-                hyper.push({source: d.link[0], target: d.link[1], he: d.he, color: color});
+                hyper.push({source: d.link[0], target: d.link[1], he: d.he, heid: (index+1), color: color});
             }
 
         });
@@ -137,8 +139,6 @@ export function draw(
             link.push(element)
         });
         graph.links.push(l);
-        
-        
     });
 
 
@@ -154,6 +154,8 @@ export function draw(
     //d3.hypergraph nodes
     nodes = data.nodes;
 
+    // console.log(nodes);
+    // console.log(links);
 
     //node mapping by id
     var nodeById = d3.map(nodes, function(d) { return d.id; });
@@ -172,6 +174,7 @@ export function draw(
         i.he = link.he
         i.weight = link.he.vertices[link.source.id];
         i.iid = intermediates++;
+        i.heid = link.heid;
 
         nodes.push(i);
 
@@ -197,8 +200,11 @@ export function draw(
         .data(bilinks)
         .enter().append("path")
         .attr("id", function(d){
-            
-            pathIds["path" + d[0].id + d[1].iid + d[2].id] = d[1].weight;
+            //console.log(d);
+            var label = false;
+            if (d[0].id == d[2].id || !d[2].link)
+                label = true;
+            pathIds["path" + d[0].id + d[1].iid + d[2].id] = {weight: d[1].weight, heid: d[1].heid, label: label};
             return "path" + d[0].id + d[1].iid + d[2].id;
         })
         .attr("class", "link")
@@ -208,6 +214,7 @@ export function draw(
         .attr("stroke-width", "3px")
         .attr("fill", "none");
 
+    console.log(pathIds)
     if (withHyperedgesMetadataOnHover){
         link.append("title")
             .text(function(d) { 
@@ -216,7 +223,7 @@ export function draw(
     }
 
        
-  svg.selectAll("g")
+var path = svg.selectAll("g")
         .data(Object.keys(pathIds))
         .enter()
         .append("text")
@@ -224,23 +231,45 @@ export function draw(
         .attr("xlink:href", function(d){
             return "#" + d;
         })
-        .style("font-size", "10px")  
+        .style("font-size", "14px")  
         .style("text-anchor","middle") //place the text halfway on the arc
         .attr("startOffset", "50%")
         .text(function(d) { 
                 //console.log(pathIds[d]);
-                return pathIds[d];
+                // if (withEdgeLabels && withNodeWeigth)
+                //     return pathIds[d].heid + " - " + pathIds[d].weight;
+                // if (withEdgeLabels)
+                //     return pathIds[d].heid;
+                if (withNodeWeight)
+                    return pathIds[d].weight;
+        });
+        //.style("font-weight", "bold");
+
+
+    svg.selectAll("g")
+        .data(Object.keys(pathIds))
+        .enter()
+        .append("text")
+        .append("textPath")
+        .attr("xlink:href", function(d){
+            return "#" + d;
+        })
+        .style("font-size", "14px") 
+        .style("text-anchor","middle") //place the text halfway on the arc
+        .style("dominant-baseline", "text-before-edge")
+        .attr("startOffset", "50%")
+        .text(function(d) { 
+            console.log(d);
+                //console.log(pathIds[d]);
+                // if (withEdgeLabels && withNodeWeigth)
+                //     return pathIds[d].heid + " - " + pathIds[d].weight;
+                if (withEdgeLabels)
+                    if (pathIds[d].label)
+                        return pathIds[d].heid;
+                // if (withNodeWeigth)
+                //     return pathIds[d].weight;
         })
         .style("font-weight", "bold");
-
-    // link.append("text")
-    //     .style("font-size", "20px")
-    //     //.append("textPath")    
-    //     .text(function(d) { 
-    //             console.log(d[1].weight);
-    //             return d[1].weight;
-    //         })
-    //     .attr('text-anchor','middle',); 
 
     /*
     * NODE CREATION
@@ -344,10 +373,40 @@ export function draw(
                     return null;
             });
     }	  
-    
 
 
     node.call(drag);
+
+    /* link data */
+    if (withEdgeLabels){
+        //at least three vertices in the hyperedge
+        node.append("text")
+            .text(function(d) { 
+                //console.log(d);
+                if (d.link)
+                    return d.heid;		
+        })
+        .style("font-weight", "bold")
+        .style("font-size", "14px") ;   
+        
+        //two or only a single node in the
+        // svg.selectAll("g")
+        // .data(Object.keys(pathIds))
+        // .enter()
+        // .append("text")
+        // .append("textPath")
+        // .attr("xlink:href", function(d){
+        //     return "#" + d;
+        // })
+        // .style("font-size", "10px")  
+        // .style("text-anchor","middle") //place the text halfway on the arc
+        // .attr("startOffset", "50%")
+        // .text(function(d) { 
+        //         //console.log(pathIds[d]);
+        //         return pathIds[d];
+        // })
+        // .style("font-weight", "bold");
+    }
 
       
     //sphere marker
