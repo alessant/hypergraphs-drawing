@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    mode: 'development', //'development', //production
+    mode: 'production', //'development', //production
     entry: {
         hypergraphsdrawing: './src/index.js'
     },
@@ -9,7 +9,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].js',
         publicPath: '/assets/',
-        libraryTarget: 'umd',
+        libraryTarget: 'var', //'umd
         library: 'hgd'
     },
     devServer: {

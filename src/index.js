@@ -16,13 +16,10 @@
 
 'use strict'
 
-import * as classes from './classes';
 import * as drawing from './drawing';
 
 export{
-    classes,
     drawing
 };
 
-export * from './classes';
 export * from './drawing';
