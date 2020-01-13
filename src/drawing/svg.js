@@ -1,4 +1,5 @@
 const d3 = require('d3');
+const seedrandom = require('seedrandom');
 
 export function draw(
     hg, 
@@ -37,6 +38,9 @@ export function draw(
         var	j;
         var	k;
         var nodesSelfloop={};
+
+        var rng = seedrandom('hello.');
+        console.log(rng()); 
 
         links.forEach((d, index) => {
             
