@@ -15,20 +15,20 @@ export function draw(
     nodeStroke=null,
     nodeStrokes=null,
     strokeWidth=0,
-    strokeWidths=undefined,
+    strokeWidths=null,
     nodeOpacity=1,
-    nodeOpacities=undefined,
+    nodeOpacities=null,
     strokeOpacity=1,
-    strokeOpacities=undefined,
+    strokeOpacities=null,
     withNodeLabels=true,
     nodeLabels=null,
     nodeLabelsAttr=null,
     nodeLabelsStyle=null,
-    withNodeMetadataOnHover=true,
-    withNodeWeight=true,
+    withNodeMetadataOnHover=false,
+    withNodeWeight=false,
     edgeColors=null, 
-    withEdgeLabels=true, 
-    withHyperedgesMetadataOnHover=true)
+    withEdgeLabels=false, 
+    withHyperedgesMetadataOnHover=false)
 {
     var hypergraph = function (links,nodes) {
         var obj;
@@ -40,7 +40,7 @@ export function draw(
 
         links.forEach((d, index) => {
             
-            var color = (edgeColors != null) ? edgeColors[i] : getRandomColor();
+            var color = (edgeColors != null) ? edgeColors[index] : getRandomColor();
    
             //if link length >2 there's an Hyperlink: i need to create a connection node
             if (d.link.length > 2) {
@@ -214,7 +214,7 @@ export function draw(
         .attr("stroke-width", "3px")
         .attr("fill", "none");
 
-    console.log(pathIds)
+    //console.log(pathIds)
     if (withHyperedgesMetadataOnHover){
         link.append("title")
             .text(function(d) { 
@@ -259,7 +259,7 @@ export function draw(
         .style("dominant-baseline", "text-before-edge")
         .attr("startOffset", "50%")
         .text(function(d) { 
-            console.log(d);
+            //console.log(d);
                 //console.log(pathIds[d]);
                 // if (withEdgeLabels && withNodeWeigth)
                 //     return pathIds[d].heid + " - " + pathIds[d].weight;
