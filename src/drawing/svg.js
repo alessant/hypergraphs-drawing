@@ -207,8 +207,8 @@ export function draw(
             var label = false;
             if (d[0].id == d[2].id || !d[2].link)
                 label = true;
-            pathIds["path" + d[0].id + d[1].iid + d[2].id] = {weight: d[1].weight, heid: d[1].heid, label: label};
-            return "path" + d[0].id + d[1].iid + d[2].id;
+            pathIds["path" + d[0].id + d[1].iid + d[2].id + element] = {weight: d[1].weight, heid: d[1].heid, label: label};
+            return "path" + d[0].id + d[1].iid + d[2].id + element;
         })
         .attr("class", "link")
         .style("stroke", function(d){
