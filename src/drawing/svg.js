@@ -10,7 +10,6 @@ export function draw(
     linkStrength=1,
     theta=0.8,
     radius=10,
-    fakeNodeRadius=0,
     nodeColor="#999",
     nodeColors=null,
     nodeStroke=null,
@@ -84,6 +83,7 @@ export function draw(
     
     var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
     var nodeId = 0;
+    var fakeNodeRadius=0;
 
     //zoom handler
     var zoom = d3.zoom()
@@ -223,27 +223,27 @@ export function draw(
     }
 
        
-var path = svg.selectAll("g")
-        .data(Object.keys(pathIds))
-        .enter()
-        .append("text")
-        .append("textPath")
-        .attr("xlink:href", function(d){
-            return "#" + d;
-        })
-        .style("font-size", "14px")  
-        .style("text-anchor","middle") //place the text halfway on the arc
-        .attr("startOffset", "50%")
-        .text(function(d) { 
-                //console.log(pathIds[d]);
-                // if (withEdgeLabels && withNodeWeigth)
-                //     return pathIds[d].heid + " - " + pathIds[d].weight;
-                // if (withEdgeLabels)
-                //     return pathIds[d].heid;
-                if (withNodeWeight)
-                    return pathIds[d].weight;
-        });
-        //.style("font-weight", "bold");
+    var path = svg.selectAll("g")
+            .data(Object.keys(pathIds))
+            .enter()
+            .append("text")
+            .append("textPath")
+            .attr("xlink:href", function(d){
+                return "#" + d;
+            })
+            .style("font-size", "14px")  
+            .style("text-anchor","middle") //place the text halfway on the arc
+            .attr("startOffset", "50%")
+            .text(function(d) { 
+                    //console.log(pathIds[d]);
+                    // if (withEdgeLabels && withNodeWeigth)
+                    //     return pathIds[d].heid + " - " + pathIds[d].weight;
+                    // if (withEdgeLabels)
+                    //     return pathIds[d].heid;
+                    if (withNodeWeight)
+                        return pathIds[d].weight;
+            });
+            //.style("font-weight", "bold");
 
 
     svg.selectAll("g")
