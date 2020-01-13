@@ -40,11 +40,10 @@ export function draw(
         var nodesSelfloop={};
 
         var rng = seedrandom('hello.');
-        console.log(rng()); 
 
         links.forEach((d, index) => {
             
-            var color = (edgeColors != null) ? edgeColors[index] : getRandomColor();
+            var color = (edgeColors != null) ? edgeColors[index] : getRandomColor(rng);
    
             //if link length >2 there's an Hyperlink: i need to create a connection node
             if (d.link.length > 2) {
@@ -549,12 +548,12 @@ export function draw(
       svg.attr("transform", d3.event.transform);
     }   
 
-    function getRandomColor() {
+    function getRandomColor(rng) {
         var letters = '0123456789ABCDEF';
         var color = '#';
 
         for (var i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)]; 
+          color += letters[Math.floor(rng() * 16)]; //Math.random()
         }
         return color;
     }
