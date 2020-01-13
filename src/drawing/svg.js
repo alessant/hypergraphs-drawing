@@ -11,6 +11,7 @@ export function draw(
     linkStrength=1,
     theta=0.8,
     radius=10,
+    nodeRadii=null,
     nodeColor="#999",
     nodeColors=null,
     nodeStroke=null,
@@ -120,8 +121,6 @@ export function draw(
     //data reading from json file 
         
     var graph = {"nodes":[],"links":[]};
-     
-
 
     Object.keys(hg.vertices).forEach((element, i) => {
         //console.log(element);
@@ -296,7 +295,7 @@ export function draw(
             if (d.link){
                 return fakeNodeRadius;
             }else{
-                return radius;
+                return (nodeRadii != null) ? nodeRadii[d.id-1] : radius;
             }
         })
         .attr("fill", function(d) {
