@@ -30,6 +30,7 @@ export function draw(
     withNodeWeight=false,
     edgeColors=null, 
     withEdgeLabels=false, 
+    edgeLabels=null,
     withHyperedgesMetadataOnHover=false)
 {
     var hypergraph = function (links,nodes) {
@@ -267,7 +268,7 @@ export function draw(
                 //     return pathIds[d].heid + " - " + pathIds[d].weight;
                 if (withEdgeLabels)
                     if (pathIds[d].label)
-                        return pathIds[d].heid;
+                        return (edgeLabels != null) ? edgeLabels[pathIds[d].heid-1] : pathIds[d].heid;
                 // if (withNodeWeigth)
                 //     return pathIds[d].weight;
         })
@@ -386,7 +387,7 @@ export function draw(
             .text(function(d) { 
                 //console.log(d);
                 if (d.link)
-                    return d.heid;		
+                    return (edgeLabels != null) ? edgeLabels[d.heid-1] : d.heid;		
         })
         .style("font-weight", "bold")
         .style("font-size", "14px") ;   
