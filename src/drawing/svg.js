@@ -33,6 +33,7 @@ export function draw(
     edgeLabels=null,
     withHyperedgesMetadataOnHover=false)
 {
+    console.log("hello");
     var hypergraph = function (links,nodes) {
         var obj;
         var hyper = [];
