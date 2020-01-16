@@ -165,7 +165,7 @@ export function draw(
         graph.links.push(l);
     })
 
-    console.log(graph)
+    // console.log(graph)
 
     var nodes = graph.nodes,
         links = graph.links,
@@ -173,7 +173,7 @@ export function draw(
 
     //d3.hypergraph invocation passing links and nodes 
     var data = hypergraph(links, nodes);
-    console.log("H", data)
+    // console.log("H", data)
 
     var fakeNodeRadius=0;
 
@@ -245,7 +245,7 @@ export function draw(
     if (withHyperedgesMetadataOnHover){
         link.append("title")
             .text(function(d) { 
-                return (hemeta != null) ? hemeta[d[1].id - 1] : null //d[1].he.metadata
+                return (hemeta != null) ? hemeta[d[1].heid - 1] : null //d[1].he.metadata
         });
     }
 
